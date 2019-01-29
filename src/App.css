@@ -19,3 +19,22 @@ body {
   font-size: 10px;
   vertical-align: middle;
 }
+
+.overlay {
+  font-family: 'Gochi Hand', cursive;
+  font-size: 160px;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  line-height: 100vh;
+  position: absolute;
+  top: 0;
+}
+
+.dead {
+  color: red;
+}
+
+.win {
+  color: green;
+}

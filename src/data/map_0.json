@@ -1,12 +1,12 @@
 {
   "size": {
-    "x": 8,
+    "x": 10,
     "y": 10
   },
   "startPos": {
     "x": 0,
     "y": 0,
-    "orientation": "n"
+    "orientation": "e"
   },
   "exitPos": {
     "x": 9,

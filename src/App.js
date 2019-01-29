@@ -1,17 +1,98 @@
 import React, { Component } from 'react';
 
-import moves from './data/moves_0.json';
 import map from './data/map_0.json';
+
+// Losing moves
+// import moves from './data/moves_0.json';
+// Winning moves
+import moves from './data/moves_1.json';
 
 import './App.css';
 
 class App extends Component {
+
   constructor() {
     super();
+  
+    this.orientations = ["n", "e", "s", "w"];
 
     this.state = {
       player: map.startPos,
+      moves: moves,
+      gameState: "inProgress",
     }
+
+    this.interval = setInterval(() => {
+      this.moveTurtle();
+    }, 1000);
+  }
+
+  moveTurtle() {
+    if (!moves.length) {
+      this.setState({
+        gameState: "incomplete",
+      });
+
+      return;
+    }
+
+    const player = this.state.player;
+    const move = moves[0];
+
+    if (move === "m") {
+      // Move the turtle based on his orientation
+      switch (player.orientation) {
+        case "n":
+          player.y = player.y - 1;
+
+          break;
+        case "e":
+          player.x = player.x + 1;
+
+          break;
+        case "s":
+          player.y = player.y + 1;
+
+          break;
+        case "w":
+          player.x = player.x - 1;
+
+          break;
+      }
+    } else if (move === "r") {
+      // Find orientation and assign next one in the list, wrapping around if needed
+      // This gets the current index of the current orientation of the turtle, adds 1, and
+      // mods it by the length of the orientation in case it goes off the end of the array.  
+      player.orientation = this.orientations[
+        (this.orientations.indexOf(player.orientation) + 1) % this.orientations.length
+      ];
+    }
+
+    // Use the new position to check if we're on a mine, or at an exit
+    if (this.isMine(player.x, player.y)) {
+      this.setState({
+        gameState: "dead", // :( 
+      });
+
+      // clear the interval so we don't keep moving the turtle
+      clearInterval(this.interval);
+    } else if (this.isExit(player.x, player.y)) {
+      this.setState({
+        gameState: "win", // :)
+      });
+
+      // clear the interval so we don't keep moving the turtle
+      clearInterval(this.interval);
+    }
+    // TODO: Maybe an out of bounds check?
+
+    // We're done with this move, so remove it from the start of the array for next time
+    // this function is called.
+    moves.shift();
+
+    this.setState({
+      player,
+    })
   }
 
 
@@ -47,29 +128,36 @@ class App extends Component {
         } else if (this.isExit(x, y)) {
           child = "exit";
         } else if (this.isPlayerPos(x, y)) {
-          child = "turtle";
+          child = "turtle" + this.state.player.orientation;
         }
 
 
-        gridChildren.push(<span className="grid-item" data-x={x} data-y={y}>{child}</span>);
+        gridChildren.push(<span key={x + "," + y} className="grid-item" data-x={x} data-y={y}>{child}</span>);
       }
-      gridChildren.push(<div/>)
+      gridChildren.push(<div key={"break" + y}/>)
     }
 
     return gridChildren;
   }
 
   render() {
-
-    console.log(moves);
-    console.log(map);
-
-
     const gridChildren = this.generateGrid();
+
+    let overlay;
+    switch (this.state.gameState) {
+      case "dead":
+        overlay = <div className="overlay dead">ded :(</div>;
+
+        break;
+      case "win":
+        overlay = <div className="overlay win">winrar :)))</div>;
+        break;
+    }
 
     return (
       <div className="table-holder">
         {gridChildren}
+        {overlay}
       </div>
     );
   }
