@@ -1,68 +1,60 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Flukey Turtle
+This is a little game where a turtle has to slowly parse a JSON file and navigate a maze. The JSON file is structured as follows:
 
-In the project directory, you can run:
+### Map
+A JSON object describing the maze size, the player's starting position and orientation, the position of mines, and the exit position. For example:
 
-### `npm start`
+```
+{
+  "size": {
+    "x": 10,
+    "y": 7
+  },
+  "startPos": {
+    "x": 0,
+    "y": 0,
+    "orientation": "e"
+  },
+  "exitPos": {
+    "x": 9,
+    "y": 6
+  },
+  "mines": [
+    {
+      "x": 2,
+      "y": 2
+    },
+    ...
+  ]
+}
+```
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Moves
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+A simple array of moves, with "r" denoting a 90deg rotation, and "m" denoting one move forward. E.g:
+```
+["m", "r"]
+```
 
-### `npm test`
+This was implemented in React and has been done in a minimal sense, so there are certain ways I did things that I would not usually do. For example, this structure of this project does not lend itself well to using compostion, and all CSS is global. In a production environment, the project would generally be more suited for composition, and I would use encapsulated CSS. But, for a project of this size, this approach is fine B-)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This React app reads in some JSON files describing moves and a map, and loads them into a state. This state is then manipulated and built upon via an interval, and when certain conditions are matched, it displays loss/failure. 
 
-### `npm run build`
+## Future work
+If I were to continue this app... I would add bounds checking for the turtle and validate the input files. I thought this might be overkill for this small app though.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Building
+Feel free to clone this code and run with the following commands:
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+```
+npm i
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Once running, you can edit the JSON files to get cooler and more interesting maps :)
 
-### `npm run eject`
+## Interactive demo
+But, if you don't feel like going through all that trouble, you can just check out this demo:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+https://darajava.github.io/turtle-challenge/

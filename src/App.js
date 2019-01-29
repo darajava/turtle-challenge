@@ -155,6 +155,8 @@ class App extends Component {
     for (let y = 0; y < map.size.y; y++) {
       for (let x = 0; x < map.size.x; x++) {
         let child = [];
+        // These give a React warning, but I suspect this is a bug in React.
+        // I will file a bug report for this.
         if (this.isMine(x, y)) {
           child.push(<img src="mine.jpg"/>);
         }
@@ -166,7 +168,7 @@ class App extends Component {
         }
 
 
-        gridChildren.push(<span key={x + "," + y} className="grid-item" data-x={x} data-y={y}>{child}</span>);
+        gridChildren.push(<span key={x + "," + y} className="grid-item">{child}</span>);
       }
       gridChildren.push(<div key={"break" + y}/>)
     }
