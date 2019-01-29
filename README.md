@@ -1,5 +1,5 @@
 
-# Flukey Turtle
+# Flukey the Turtle
 This is a little game where a turtle has to slowly parse a JSON file and navigate a maze. The JSON file is structured as follows:
 
 ### Map
