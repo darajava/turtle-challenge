@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 
 import map from './data/map_0.json';
 
+// Comment/Uncomment for different test cases
+
 // Losing moves
-// import moves from './data/moves_0.json';
+import moves from './data/moves_0.json';
+
 // Winning moves
-import moves from './data/moves_1.json';
+// import moves from './data/moves_1.json';
+
+// Unfinishing moves
+// import moves from './data/moves_2.json';
 
 import './App.css';
 
@@ -24,7 +30,7 @@ class App extends Component {
 
     this.interval = setInterval(() => {
       this.moveTurtle();
-    }, 1000);
+    }, 100);
   }
 
   moveTurtle() {
@@ -122,13 +128,15 @@ class App extends Component {
 
     for (let y = 0; y < map.size.y; y++) {
       for (let x = 0; x < map.size.x; x++) {
-        let child = " ";
+        let child = [];
         if (this.isMine(x, y)) {
-          child = "mine";
-        } else if (this.isExit(x, y)) {
-          child = "exit";
-        } else if (this.isPlayerPos(x, y)) {
-          child = "turtle" + this.state.player.orientation;
+          child.push(<img src="mine.jpg"/>);
+        }
+        if (this.isExit(x, y)) {
+          child.push(<img src="exit.png"/>);
+        }
+        if (this.isPlayerPos(x, y)) {
+          child.push(<img className={this.state.player.orientation} src="turtle.png"/>);
         }
 
 
@@ -146,12 +154,14 @@ class App extends Component {
     let overlay;
     switch (this.state.gameState) {
       case "dead":
-        overlay = <div className="overlay dead">ded :(</div>;
-
+        overlay = <div className="overlay dead">ded :,(</div>;
         break;
       case "win":
         overlay = <div className="overlay win">winrar :)))</div>;
         break;
+      case "incomplete":
+        overlay = <div className="overlay dead">Out of juice :,(</div>;
+        break; 
     }
 
     return (

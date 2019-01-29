@@ -20,6 +20,12 @@ body {
   vertical-align: middle;
 }
 
+.grid-item img {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+}
+
 .overlay {
   font-family: 'Gochi Hand', cursive;
   font-size: 160px;
@@ -28,7 +34,7 @@ body {
   height: 100%;
   line-height: 100vh;
   position: absolute;
-  top: 0;
+  top: 0;  
 }
 
 .dead {
@@ -37,4 +43,24 @@ body {
 
 .win {
   color: green;
+}
+
+.n {
+  transform: rotate(0deg);
+}
+
+.s {
+  transform: rotate(180deg);
+}
+
+.e {
+  transform: rotate(90deg);
+}
+
+.w {
+  transform: rotate(270deg);
+}
+
+.n, .s, .e, .w {
+  transition: transform 0.2s;
 }
