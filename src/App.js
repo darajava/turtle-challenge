@@ -2,16 +2,9 @@ import React, { Component } from 'react';
 
 import map from './data/map_0.json';
 
-// Comment/Uncomment for different test cases
-
-// Losing moves
-import moves from './data/moves_0.json';
-
-// Winning moves
-// import moves from './data/moves_1.json';
-
-// Unfinishing moves
-// import moves from './data/moves_2.json';
+import movesLose from './data/moves_0.json';
+import movesWin from './data/moves_1.json';
+import movesUnfinished from './data/moves_2.json';
 
 import './App.css';
 
@@ -22,19 +15,50 @@ class App extends Component {
   
     this.orientations = ["n", "e", "s", "w"];
 
+    // We need to clone the starting position here and below via JSON so that
+    // we do not modify the initial state
     this.state = {
-      player: map.startPos,
-      moves: moves,
+      player: JSON.parse(JSON.stringify(map.startPos)),
+      moves: JSON.parse(JSON.stringify(movesWin)),
       gameState: "inProgress",
     }
 
+    this.initialiseInterval();
+  }
+
+  initialiseInterval() {
+    clearTimeout(this.interval);
+
+    // Move the turtle every X milliseconds according to this interval,
+    // and save the interval to clear later
     this.interval = setInterval(() => {
       this.moveTurtle();
-    }, 100);
+    }, 1000);
+  }
+
+  reset(movesType) {
+    let moves;
+
+    if (movesType === "win") {
+      moves = movesWin;
+    } else if (movesType === "lose") {
+      moves = movesLose;
+    } else {
+      moves = movesUnfinished;
+    }
+
+    this.initialiseInterval();
+
+    this.setState({
+      player: JSON.parse(JSON.stringify(map.startPos)),
+      moves: JSON.parse(JSON.stringify(moves)),
+      gameState: "inProgress",
+    })
   }
 
   moveTurtle() {
-    if (!moves.length) {
+    // if we have run out of moves, then we lose
+    if (!this.state.moves.length) {
       this.setState({
         gameState: "incomplete",
       });
@@ -43,9 +67,11 @@ class App extends Component {
     }
 
     const player = this.state.player;
-    const move = moves[0];
 
-    if (move === "m") {
+    // Working from the first move always, we will remove this element later
+    const moves = this.state.moves;
+
+    if (moves[0] === "m") {
       // Move the turtle based on his orientation
       switch (player.orientation) {
         case "n":
@@ -65,7 +91,7 @@ class App extends Component {
 
           break;
       }
-    } else if (move === "r") {
+    } else if (moves[0] === "r") {
       // Find orientation and assign next one in the list, wrapping around if needed
       // This gets the current index of the current orientation of the turtle, adds 1, and
       // mods it by the length of the orientation in case it goes off the end of the array.  
@@ -74,20 +100,19 @@ class App extends Component {
       ];
     }
 
-    // Use the new position to check if we're on a mine, or at an exit
+    // Use the new position to check if we're on a mine, or at an exit.
+    // If we are, then update the game state
     if (this.isMine(player.x, player.y)) {
       this.setState({
         gameState: "dead", // :( 
       });
 
-      // clear the interval so we don't keep moving the turtle
       clearInterval(this.interval);
     } else if (this.isExit(player.x, player.y)) {
       this.setState({
         gameState: "win", // :)
       });
 
-      // clear the interval so we don't keep moving the turtle
       clearInterval(this.interval);
     }
     // TODO: Maybe an out of bounds check?
@@ -98,6 +123,7 @@ class App extends Component {
 
     this.setState({
       player,
+      moves,
     })
   }
 
@@ -165,9 +191,15 @@ class App extends Component {
     }
 
     return (
-      <div className="table-holder">
-        {gridChildren}
-        {overlay}
+      <div>
+        <div className="table-holder">
+          {gridChildren}
+          {overlay}
+        </div>
+
+        <button onClick={() => this.reset("win")}>Win</button>
+        <button onClick={() => this.reset("lose")}>Lose</button>
+        <button onClick={() => this.reset("unfinished")}>Don't finish</button>
       </div>
     );
   }
