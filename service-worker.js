@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/turtle-challenge/precache-manifest.1683b27775610f81cdef20ee521adb3e.js"
+  "/turtle-challenge/build/precache-manifest.aa19afc5c826b64fb8dddea9444f3356.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/turtle-challenge/index.html", {
+workbox.routing.registerNavigationRoute("/turtle-challenge/build/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
