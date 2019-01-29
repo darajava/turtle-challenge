@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/turtle-challenge/precache-manifest.1683b27775610f81cdef20ee521adb3e.js"
+  "/turtle-challenge/precache-manifest.3e33a1ffad1d3913669de98a04cf858c.js"
 );
 
 workbox.clientsClaim();
