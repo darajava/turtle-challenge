@@ -66,7 +66,7 @@ class App extends Component {
       return;
     }
 
-    const player = this.state.player;
+    let player = this.state.player;
 
     // Working from the first move always, we will remove this element later
     const moves = this.state.moves;
