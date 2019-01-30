@@ -71,34 +71,7 @@ class App extends Component {
     // Working from the first move always, we will remove this element later
     const moves = this.state.moves;
 
-    if (moves[0] === "m") {
-      // Move the turtle based on his orientation
-      switch (player.orientation) {
-        case "n":
-          player.y = player.y - 1;
-
-          break;
-        case "e":
-          player.x = player.x + 1;
-
-          break;
-        case "s":
-          player.y = player.y + 1;
-
-          break;
-        case "w":
-          player.x = player.x - 1;
-
-          break;
-      }
-    } else if (moves[0] === "r") {
-      // Find orientation and assign next one in the list, wrapping around if needed
-      // This gets the current index of the current orientation of the turtle, adds 1, and
-      // mods it by the length of the orientation in case it goes off the end of the array.  
-      player.orientation = this.orientations[
-        (this.orientations.indexOf(player.orientation) + 1) % this.orientations.length
-      ];
-    }
+    player = this.applyMove(player, moves[0]);
 
     // Use the new position to check if we're on a mine, or at an exit.
     // If we are, then update the game state
@@ -125,6 +98,40 @@ class App extends Component {
       player,
       moves,
     })
+  }
+
+
+  applyMove(player, move) {
+    if (move === "m") {
+      // Move the turtle based on his orientation
+      switch (player.orientation) {
+        case "n":
+          player.y = player.y - 1;
+
+          break;
+        case "e":
+          player.x = player.x + 1;
+
+          break;
+        case "s":
+          player.y = player.y + 1;
+
+          break;
+        case "w":
+          player.x = player.x - 1;
+
+          break;
+      }
+    } else if (move === "r") {
+      // Find orientation and assign next one in the list, wrapping around if needed
+      // This gets the current index of the current orientation of the turtle, adds 1, and
+      // mods it by the length of the orientation in case it goes off the end of the array.  
+      player.orientation = this.orientations[
+        (this.orientations.indexOf(player.orientation) + 1) % this.orientations.length
+      ];
+    }
+
+    return player;
   }
 
 
